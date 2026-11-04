@@ -153,6 +153,9 @@ def scrape_google_maps(
                 "--disable-blink-features=AutomationControlled",
                 "--no-sandbox",
                 "--disable-dev-shm-usage",
+                "--disable-gpu",
+                "--disable-setuid-sandbox",
+                "--no-zygote",
                 "--lang=en-US"
             ]
         )
