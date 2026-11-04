@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Maps Lead Extractor & Excel Exporter</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #06b6d4 100%);
+        }
+        @keyframes pulse-subtle {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        .anim-pulse { animation: pulse-subtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen text-slate-800 flex flex-col justify-between">
+
+    <!-- Top Navigation -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-cyan-500 flex items-center justify-center text-white shadow-md shadow-blue-500/20">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold text-slate-900 leading-tight">MapLead Scraper</h1>
+                    <p class="text-xs text-slate-500">Universal Google Maps & Website Email Miner</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-2 text-xs font-medium text-emerald-700 bg-emerald-50 border border-emerald-200/80 px-3 py-1.5 rounded-full">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span>Ready to Extract</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full flex-grow">
+        
+        <!-- Hero Section -->
+        <div class="text-center max-w-3xl mx-auto mb-10">
+            <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-semibold mb-4">
+                <span>🚀 Any Business Domain: Gyms, Cafes, Petrol Pumps, Parking, Cinemas & More</span>
+            </div>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+                Extract Business Leads with <span class="text-blue-600">Contact No. & Emails</span>
+            </h2>
+            <p class="mt-3 text-slate-600 text-base">
+                Search any domain or location. We scrape phone numbers, addresses, ratings, and even visit official business websites to find contact emails, then export everything into a ready-to-use Excel sheet.
+            </p>
+        </div>
+
+        <!-- Search Card -->
+        <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl shadow-slate-200/60 border border-slate-200 p-6 sm:p-8 mb-10">
+            <form id="scrapeForm" class="space-y-6">
+                <!-- Search Input Bar -->
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                    </div>
+                    <input 
+                        type="text" 
+                        id="queryInput" 
+                        name="query" 
+                        required 
+                        placeholder="Enter business & location, e.g. gyms in chandigarh, cafes in bandra, petrol pumps in noida..." 
+                        class="w-full pl-12 pr-40 py-4 text-base sm:text-lg border-2 border-slate-200 rounded-xl focus:outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-100 transition shadow-inner font-medium placeholder:text-slate-400"
+                        value="gyms in chandigarh"
+                    >
+                    <button 
+                        type="submit" 
+                        id="submitBtn" 
+                        class="absolute right-2 top-2 bottom-2 px-6 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold rounded-lg transition duration-150 flex items-center space-x-2 shadow-md shadow-blue-500/30"
+                    >
+                        <span>Extract Leads</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Suggestions Chips -->
+                <div class="flex flex-wrap items-center gap-2 text-xs">
+                    <span class="text-slate-500 font-semibold mr-1">Try searching:</span>
+                    <button type="button" class="preset-chip bg-slate-100 hover:bg-blue-50 hover:text-blue-700 border border-slate-200 px-3 py-1 rounded-full text-slate-700 transition" data-query="gyms in chandigarh">🏋️ Gyms in Chandigarh</button>
+                    <button type="button" class="preset-chip bg-slate-100 hover:bg-blue-50 hover:text-blue-700 border border-slate-200 px-3 py-1 rounded-full text-slate-700 transition" data-query="cafes in bandra mumbai">☕ Cafes in Mumbai</button>
+                    <button type="button" class="preset-chip bg-slate-100 hover:bg-blue-50 hover:text-blue-700 border border-slate-200 px-3 py-1 rounded-full text-slate-700 transition" data-query="petrol pumps in noida">⛽ Petrol Pumps in Noida</button>
+                    <button type="button" class="preset-chip bg-slate-100 hover:bg-blue-50 hover:text-blue-700 border border-slate-200 px-3 py-1 rounded-full text-slate-700 transition" data-query="parking in connaught place delhi">🅿️ Parking in CP Delhi</button>
+                    <button type="button" class="preset-chip bg-slate-100 hover:bg-blue-50 hover:text-blue-700 border border-slate-200 px-3 py-1 rounded-full text-slate-700 transition" data-query="cinemas in hyderabad">🎬 Cinemas in Hyderabad</button>
+                </div>
+
+                <!-- Filters & Controls -->
+                <div class="pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-4">
+                    <div class="flex items-center space-x-3">
+                        <label for="maxResults" class="text-sm font-semibold text-slate-700">Max Results:</label>
+                        <select id="maxResults" class="border border-slate-300 rounded-lg px-3 py-1.5 text-sm font-medium focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                            <option value="5">5 listings (Fast test)</option>
+                            <option value="10" selected>10 listings</option>
+                            <option value="25">25 listings</option>
+                            <option value="50">50 listings</option>
+                            <option value="100">100 listings</option>
+                        </select>
+                    </div>
+
+                    <div class="flex items-center space-x-3">
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="extractEmails" checked class="sr-only peer">
+                            <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-400 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                            <span class="ml-3 text-sm font-medium text-slate-700">Auto-mine emails from official websites</span>
+                        </label>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Live Progress Status Card -->
+        <div id="progressCard" class="hidden max-w-4xl mx-auto bg-white rounded-2xl shadow-lg border border-slate-200 p-6 mb-10 transition">
+            <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center space-x-3">
+                    <div class="w-6 h-6 border-3 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+                    <span id="progressStep" class="font-bold text-slate-900 text-sm sm:text-base">Scraping in progress...</span>
+                </div>
+                <span id="progressPercent" class="text-sm font-bold text-blue-600">15%</span>
+            </div>
+            
+            <!-- Progress Bar -->
+            <div class="w-full bg-slate-100 rounded-full h-3 overflow-hidden">
+                <div id="progressBar" class="bg-gradient-to-r from-blue-600 to-cyan-500 h-3 rounded-full transition-all duration-300 ease-out" style="width: 15%"></div>
+            </div>
+
+            <!-- Real-time log message -->
+            <p id="progressMessage" class="mt-3 text-xs sm:text-sm text-slate-500 font-mono truncate">
+                Initializing Google Maps crawler...
+            </p>
+        </div>
+
+        <!-- Results Section -->
+        <div id="resultsSection" class="hidden max-w-6xl mx-auto space-y-6">
+            
+            <!-- Results Header & Download Banner -->
+            <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div>
+                    <h3 class="text-xl font-bold text-slate-900" id="resultsTitle">Extracted Results</h3>
+                    <p class="text-xs sm:text-sm text-slate-500 mt-1" id="resultsStats">Found 10 listings | 8 Websites | 4 Emails</p>
+                </div>
+
+                <div class="flex items-center space-x-3 w-full sm:w-auto">
+                    <!-- Excel Download Button -->
+                    <a id="downloadExcelBtn" href="#" class="flex-1 sm:flex-initial inline-flex items-center justify-center space-x-2 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold px-5 py-2.5 rounded-xl shadow-md shadow-emerald-600/20 transition">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zM6 20V4h7v5h5v11H6z"/>
+                            <path d="M8.5 12.5l2 3.5-2 3.5h1.8l1.2-2.3 1.2 2.3h1.8l-2-3.5 2-3.5h-1.8l-1.2 2.3-1.2-2.3H8.5z"/>
+                        </svg>
+                        <span>Download Excel (.xlsx)</span>
+                    </a>
+
+                    <!-- CSV Download Button -->
+                    <a id="downloadCsvBtn" href="#" class="inline-flex items-center justify-center space-x-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-4 py-2.5 rounded-xl border border-slate-200 transition">
+                        <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                        </svg>
+                        <span>CSV</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Table Card -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm text-slate-600">
+                        <thead class="bg-slate-100/80 text-xs font-bold text-slate-700 uppercase tracking-wider border-b border-slate-200">
+                            <tr>
+                                <th class="px-5 py-4">#</th>
+                                <th class="px-5 py-4">Business Name</th>
+                                <th class="px-5 py-4">Category</th>
+                                <th class="px-5 py-4">Rating</th>
+                                <th class="px-5 py-4">Phone Number</th>
+                                <th class="px-5 py-4">Emails</th>
+                                <th class="px-5 py-4">Website</th>
+                                <th class="px-5 py-4">Address</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultsTableBody" class="divide-y divide-slate-100">
+                            <!-- Populated dynamically via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-500">
+        <p>Google Maps Universal Lead Extractor &copy; 2026. Built with FastAPI & Playwright.</p>
+    </footer>
+
+    <!-- App JavaScript -->
+    <script src="/static/app.js"></script>
+</body>
+</html>
